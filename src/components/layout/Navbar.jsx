@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import useCartStore from '../../store/cartStore';
 
 export default function Navbar() {
@@ -8,7 +9,12 @@ export default function Navbar() {
     const items = useCartStore((s) => s.items);
     const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
 
-    const links = ['Home', 'Shop', 'Collections', 'About'];
+    const links = [
+        { name: 'Home', path: '/' },
+        { name: 'Collections', path: '/collections' },
+        { name: 'About', path: '/about' },
+        { name: 'Contact', path: '/contact' }
+    ];
 
     return (
         <motion.nav
@@ -20,26 +26,26 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16 sm:h-20">
                     {/* Logo */}
-                    <a href="#" className="flex items-center gap-2 group">
+                    <Link to="/" className="flex items-center gap-2 group">
                         <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
                             <span className="text-primary font-bold text-sm">VS</span>
                         </div>
                         <span className="text-lg sm:text-xl font-bold tracking-wider text-text group-hover:text-accent transition-colors duration-300">
                             VOID<span className="text-accent">STREET</span>
                         </span>
-                    </a>
+                    </Link>
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-8">
                         {links.map((link) => (
-                            <a
-                                key={link}
-                                href={`#${link.toLowerCase()}`}
+                            <Link
+                                key={link.name}
+                                to={link.path}
                                 className="text-sm uppercase tracking-widest text-text-muted hover:text-accent transition-colors duration-300 relative group"
                             >
-                                {link}
+                                {link.name}
                                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
-                            </a>
+                            </Link>
                         ))}
                     </div>
 
@@ -106,17 +112,20 @@ export default function Navbar() {
                     >
                         <div className="px-4 py-6 flex flex-col gap-4">
                             {links.map((link, i) => (
-                                <motion.a
-                                    key={link}
-                                    href={`#${link.toLowerCase()}`}
+                                <motion.div
+                                    key={link.name}
                                     initial={{ x: -20, opacity: 0 }}
                                     animate={{ x: 0, opacity: 1 }}
                                     transition={{ delay: i * 0.1 }}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="text-lg uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
                                 >
-                                    {link}
-                                </motion.a>
+                                    <Link
+                                        to={link.path}
+                                        onClick={() => setMobileOpen(false)}
+                                        className="text-lg uppercase tracking-widest text-text-muted hover:text-accent transition-colors block"
+                                    >
+                                        {link.name}
+                                    </Link>
+                                </motion.div>
                             ))}
                         </div>
                     </motion.div>

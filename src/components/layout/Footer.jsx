@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
     return (
@@ -7,14 +8,14 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
                     {/* Brand */}
                     <div className="md:col-span-1">
-                        <div className="flex items-center gap-2 mb-4">
+                        <Link to="/" className="flex items-center gap-2 mb-4">
                             <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
                                 <span className="text-primary font-bold text-sm">VS</span>
                             </div>
                             <span className="text-xl font-bold tracking-wider">
                                 VOID<span className="text-accent">STREET</span>
                             </span>
-                        </div>
+                        </Link>
                         <p className="text-text-muted text-sm leading-relaxed">
                             Premium streetwear for those who move against the current. Designed for the bold.
                         </p>
@@ -22,9 +23,9 @@ export default function Footer() {
 
                     {/* Links */}
                     {[
-                        { title: 'Shop', items: ['New Arrivals', 'T-Shirts', 'Hoodies', 'Jackets', 'Accessories'] },
-                        { title: 'Company', items: ['About Us', 'Careers', 'Press', 'Sustainability'] },
-                        { title: 'Support', items: ['Contact', 'Shipping', 'Returns', 'Size Guide'] },
+                        { title: 'Shop', items: [{ n: 'New Arrivals', p: '/collections' }, { n: 'Collections', p: '/collections' }] },
+                        { title: 'Company', items: [{ n: 'About Us', p: '/about' }, { n: 'Contact', p: '/contact' }] },
+                        { title: 'Support', items: [{ n: 'FAQ', p: '/faq' }, { n: 'Shipping', p: '/faq' }] },
                     ].map((col) => (
                         <div key={col.title}>
                             <h4 className="text-sm font-semibold uppercase tracking-widest text-accent mb-4">
@@ -32,13 +33,13 @@ export default function Footer() {
                             </h4>
                             <ul className="space-y-2">
                                 {col.items.map((item) => (
-                                    <li key={item}>
-                                        <a
-                                            href="#"
+                                    <li key={item.n}>
+                                        <Link
+                                            to={item.p}
                                             className="text-sm text-text-muted hover:text-text transition-colors duration-300"
                                         >
-                                            {item}
-                                        </a>
+                                            {item.n}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>

@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import useCartStore from '../../store/cartStore';
+import useAuthStore from '../../store/authStore';
 
 export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const toggleCart = useCartStore((s) => s.toggleCart);
     const items = useCartStore((s) => s.items);
     const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
+
+    const { isAuthenticated, user } = useAuthStore();
 
     const links = [
         { name: 'Home', path: '/' },
@@ -51,6 +54,22 @@ export default function Navbar() {
 
                     {/* Right side */}
                     <div className="flex items-center gap-4">
+                        {/* Auth link */}
+                        <Link
+                            to={isAuthenticated ? "/profile" : "/login"}
+                            className="p-2 text-text-muted hover:text-accent transition-colors duration-300 flex items-center gap-2"
+                        >
+                            {isAuthenticated ? (
+                                <div className="w-8 h-8 rounded-full overflow-hidden border border-accent/20">
+                                    <img src={user?.avatar} alt="Profile" className="w-full h-full object-cover" />
+                                </div>
+                            ) : (
+                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
+                            )}
+                        </Link>
+
                         {/* Cart button */}
                         <button
                             onClick={toggleCart}

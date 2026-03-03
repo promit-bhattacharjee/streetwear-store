@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import useCartStore from '../../store/cartStore';
 import CartItem from './CartItem';
 
@@ -9,6 +10,12 @@ export default function CartSidebar() {
     const updateQuantity = useCartStore((s) => s.updateQuantity);
     const removeItem = useCartStore((s) => s.removeItem);
     const clearCart = useCartStore((s) => s.clearCart);
+    const navigate = useNavigate();
+
+    const handleCheckout = () => {
+        closeCart();
+        navigate('/checkout');
+    };
 
     const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
     const totalPrice = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
@@ -99,6 +106,7 @@ export default function CartSidebar() {
                                 <motion.button
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
+                                    onClick={handleCheckout}
                                     className="w-full py-4 bg-accent text-primary font-bold uppercase tracking-wider rounded-full text-sm shadow-lg shadow-accent/20 hover:shadow-accent/40 transition-shadow duration-300"
                                 >
                                     Checkout — ${totalPrice.toFixed(2)}

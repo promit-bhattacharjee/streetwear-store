@@ -38,17 +38,6 @@ const useCartStore = create((set, get) => ({
                     ),
         })),
 
-    get totalItems() {
-        return get().items.reduce((sum, item) => sum + item.quantity, 0);
-    },
-
-    get totalPrice() {
-        return get().items.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
-        );
-    },
-
     clearCart: () => set({ items: [] }),
 }));
 

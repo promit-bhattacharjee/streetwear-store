@@ -22,6 +22,8 @@ export default function Checkout() {
     const addOrder = useAuthStore((s) => s.addOrder);
     const navigate = useNavigate();
 
+    const totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
     const handleShippingChange = (field, value) => {
         setShippingData(prev => ({ ...prev, [field]: value }));
     };
@@ -33,7 +35,7 @@ export default function Checkout() {
 
         const order = {
             items: cart.items,
-            total: cart.totalPrice,
+            total: totalPrice,
             shipping: shippingData
         };
 
@@ -135,7 +137,7 @@ export default function Checkout() {
                             <div className="space-y-2 pt-4 border-t border-white/5">
                                 <div className="flex justify-between text-sm text-text-muted">
                                     <span>Subtotal</span>
-                                    <span>${cart.totalPrice}.00</span>
+                                    <span>${totalPrice}.00</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-text-muted">
                                     <span>Shipping</span>
@@ -143,7 +145,7 @@ export default function Checkout() {
                                 </div>
                                 <div className="flex justify-between text-lg font-bold pt-2">
                                     <span>Total</span>
-                                    <span className="text-accent">${cart.totalPrice}.00</span>
+                                    <span className="text-accent">${totalPrice}.00</span>
                                 </div>
                             </div>
                         </div>
